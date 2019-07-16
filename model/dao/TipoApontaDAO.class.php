@@ -5,13 +5,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-require_once 'Conn.class.php';
+require_once ('./dbutil/Conn.class.php');
 /**
- * Description of MotoristaDAO
+ * Description of LiderDAO
  *
  * @author anderson
  */
-class DataHoraDAO extends Conn {
+class TipoApontaDAO extends Conn {
     //put your code here
     
     /** @var PDOStatement */
@@ -22,7 +22,14 @@ class DataHoraDAO extends Conn {
 
     public function dados() {
 
-        $select = "  SELECT DISTINCT TO_CHAR(SYSDATE, 'DD/MM/YYYY HH24:MI') AS \"data\" FROM DUAL ";
+        $select = " SELECT "
+                    . " ID AS \"idTipo\" "
+                    . " , DESCR_TIPO AS \"descrTipo\" "
+                . " FROM "
+                    . " PRU_TIPO_APONTAMENTO "
+                . " ORDER BY "
+                    . " ID "
+                . " ASC ";
         
         $this->Conn = parent::getConn();
         $this->Read = $this->Conn->prepare($select);

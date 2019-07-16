@@ -5,14 +5,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-require_once 'ConnDEV.class.php';
-
+require_once ('./dbutil/Conn.class.php');
 /**
- * Description of InsBolAbertoMMDAO
+ * Description of InsBolFechadoMMDAO
  *
  * @author anderson
  */
-class InsBolAbertoDAO extends ConnDEV {
+class InsBolFechadoDAO extends ConnDEV {
     //put your code here
 
     /** @var PDOStatement */
@@ -21,7 +20,7 @@ class InsBolAbertoDAO extends ConnDEV {
     /** @var PDO */
     private $Conn;
 
-    public function salvarDados($dadosBoletim, $dadosAponta, $dadosAlocaFunc) {
+    public function salvarDados($dadosBoletim, $dadosAlocaFunc, $dadosAponta) {
 
         $this->Conn = parent::getConn();
         
@@ -54,6 +53,8 @@ class InsBolAbertoDAO extends ConnDEV {
                         . " , ATIVAGR_PRINC_ID "
                         . " , DTHR_INICIAL "
                         . " , DTHR_TRANS_INICIAL "
+                        . " , DTHR_FINAL "
+                        . " , DTHR_TRANS_FINAL "
                         . " , STATUS "
                         . " , SIT "
                         . " ) "
@@ -64,7 +65,9 @@ class InsBolAbertoDAO extends ConnDEV {
                         . " , " . $bol->ativPrincBoletim
                         . " , TO_DATE('" . $bol->dthrInicioBoletim . "','DD/MM/YYYY HH24:MI') "
                         . " , SYSDATE "
-                        . " , 1 "
+                        . " , TO_DATE('" . $bol->dthrFimBoletim . "','DD/MM/YYYY HH24:MI') "
+                        . " , SYSDATE "
+                        . " , 2 "
                         . " , 0 "
                         . " )";
 
@@ -72,13 +75,13 @@ class InsBolAbertoDAO extends ConnDEV {
                 $this->Create->execute();
 
                 $select = " SELECT "
-                        . " ID AS ID "
-                        . " FROM "
-                        . " PRU_BOLETIM "
-                        . " WHERE "
-                        . " DTHR_INICIAL = TO_DATE('" . $bol->dthrInicioBoletim . "','DD/MM/YYYY HH24:MI') "
-                        . " AND "
-                        . " LIDER_MATRIC = " . $bol->idLiderBoletim . " ";
+                    . " ID AS ID "
+                    . " FROM "
+                    . " PRU_BOLETIM "
+                    . " WHERE "
+                    . " DTHR_INICIAL = TO_DATE('" . $bol->dthrInicioBoletim . "','DD/MM/YYYY HH24:MI') "
+                    . " AND "
+                    . " LIDER_MATRIC = " . $bol->idLiderBoletim . " ";
 
                 $this->Read = $this->Conn->prepare($select);
                 $this->Read->setFetchMode(PDO::FETCH_ASSOC);
@@ -86,9 +89,9 @@ class InsBolAbertoDAO extends ConnDEV {
                 $result = $this->Read->fetchAll();
 
                 foreach ($result as $item) {
-                    $idBol = $item['ID'];
+                    $idBoletim = $item['ID'];
                 }
-
+                
                 foreach ($dadosAlocaFunc as $alocfunc) {
 
                     if ($bol->idBoletim == $alocfunc->idBolAlocaFunc) {
@@ -103,7 +106,6 @@ class InsBolAbertoDAO extends ConnDEV {
                                 . " VALUES ("
                                 . " " . $idBol
                                 . " , " . $alocfunc->codFuncionarioAlocaFunc
-                                . " , " . $alocfunc->tipoAlocaFunc
                                 . " , TO_DATE('" . $alocfunc->dthrAlocaFunc . "','DD/MM/YYYY HH24:MI') "
                                 . " , SYSDATE "
                                 . " )";
@@ -117,7 +119,7 @@ class InsBolAbertoDAO extends ConnDEV {
 
                     if ($bol->idBoletim == $apont->idBolAponta) {
 
-                        $sql = "INSERT INTO PRU_APONTAMENTO ("
+                        $sql = "INSERT INTO PMM_APONTAMENTO ("
                                 . " BOLETIM_ID "
                                 . " , OS_NRO "
                                 . " , ATIVAGR_ID "
@@ -126,7 +128,7 @@ class InsBolAbertoDAO extends ConnDEV {
                                 . " , DTHR_TRANS "
                                 . " ) "
                                 . " VALUES ("
-                                . " " . $idBol
+                                . " " . $idBoletim
                                 . " , " . $apont->osAponta
                                 . " , " . $apont->ativAponta
                                 . " , " . $apont->paradaAponta
@@ -139,10 +141,73 @@ class InsBolAbertoDAO extends ConnDEV {
                     }
                 }
                 
+            } else {
+
+                $sql = "UPDATE PRU_BOLETIM "
+                        . " SET "
+                        . " STATUS = " . $bol->statusBoletim
+                        . " , DTHR_FINAL = TO_DATE('" . $bol->dthrFimBoletim . "','DD/MM/YYYY HH24:MI') "
+                        . " , DTHR_TRANS_FINAL = SYSDATE "
+                        . " WHERE "
+                        . " ID = " . $bol->idExtBoletim;
+
+                $this->Create = $this->Conn->prepare($sql);
+                $this->Create->execute();
+
+                foreach ($dadosAlocaFunc as $alocfunc) {
+
+                    if ($bol->idBoletim == $alocfunc->idBolAlocaFunc) {
+
+                        $sql = "INSERT INTO PRU_ALOCA_FUNC ("
+                                . " BOLETIM_ID "
+                                . " , FUNC_MATRIC "
+                                . " , TIPO "
+                                . " , DTHR "
+                                . " , DTHR_TRANS "
+                                . " ) "
+                                . " VALUES ("
+                                . " " . $bol->idExtBoletim
+                                . " , " . $alocfunc->codFuncionarioAlocaFunc
+                                . " , " . $alocfunc->tipoAlocaFunc
+                                . " , TO_DATE('" . $alocfunc->dthrAlocaFunc . "','DD/MM/YYYY HH24:MI') "
+                                . " , SYSDATE "
+                                . " )";
+
+                        $this->Create = $this->Conn->prepare($sql);
+                        $this->Create->execute();
+                    }
+                }
+                
+                foreach ($dadosAponta as $apont) {
+
+                    if ($bol->idBoletim == $apont->idBolAponta) {
+                        
+                        $sql = "INSERT INTO PRU_APONTAMENTO ("
+                                    . " BOLETIM_ID "
+                                    . " , OS_NRO "
+                                    . " , ATIVAGR_ID "
+                                    . " , MOTPARADA_ID "
+                                    . " , DTHR "
+                                    . " , DTHR_TRANS "
+                                    . " ) "
+                                    . " VALUES ("
+                                    . " " . $bol->idExtBoletim
+                                    . " , " . $apont->osAponta
+                                    . " , " . $apont->ativAponta
+                                    . " , " . $apont->paradaAponta
+                                    . " , TO_DATE('" . $apont->dthrAponta . "','DD/MM/YYYY HH24:MI') "
+                                    . " , SYSDATE "
+                                    . " )";
+
+                        $this->Create = $this->Conn->prepare($sql);
+                        $this->Create->execute();
+                        
+                    }
+                    
+                }
+                
             }
         }
-
-        return "GRAVOU+id=" . $idBol . "_";
     }
 
 }

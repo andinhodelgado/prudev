@@ -5,15 +5,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-require_once 'Conn.class.php';
+require_once ('./dbutil/Conn.class.php');
 /**
- * Description of LiderDAO
+ * Description of ParadaDAO
  *
  * @author anderson
  */
-class TipoApontaDAO extends Conn {
+class ParadaDAO extends Conn {
     //put your code here
-    
+
     /** @var PDOStatement */
     private $Read;
 
@@ -23,14 +23,16 @@ class TipoApontaDAO extends Conn {
     public function dados() {
 
         $select = " SELECT "
-                    . " ID AS \"idTipo\" "
-                    . " , DESCR_TIPO AS \"descrTipo\" "
+                    . " MOTPARADA_CD AS \"codParada\" "
+                    . " , CARACTER(MOTPARADA_DESCR) AS \"descrParada\" "
                 . " FROM "
-                    . " PRU_TIPO_APONTAMENTO "
+                    . " USINAS.V_SIMOVA_PARADA "
+                . " WHERE "
+                    . " MOTPARADA_TIPO = 2 "
                 . " ORDER BY "
-                    . " ID "
+                    . " MOTPARADA_CD "
                 . " ASC ";
-        
+
         $this->Conn = parent::getConn();
         $this->Read = $this->Conn->prepare($select);
         $this->Read->setFetchMode(PDO::FETCH_ASSOC);
@@ -39,5 +41,5 @@ class TipoApontaDAO extends Conn {
 
         return $result;
     }
-    
+
 }
