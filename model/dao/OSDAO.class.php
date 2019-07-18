@@ -38,14 +38,16 @@ class OSDAO extends Conn {
         return $result;
     }
     
-    public function verif($info) {
+    public function verif($os) {
 
         $select = " SELECT DISTINCT "
-                . " NRO_OS AS \"nroOS\" "
-                . " , PROPRAGR_CD AS \"codSecao\" "
-                . " , PROPRAGR_DESCR AS \"descrSecao\" "
+                    . " NRO_OS AS \"nroOS\" "
+                    . " , PROPRAGR_CD AS \"codSecao\" "
+                    . " , PROPRAGR_DESCR AS \"descrSecao\" "
                 . " FROM "
-                . " USINAS.V_SIMOVA_OS_MANUAL ";
+                    . " USINAS.V_SIMOVA_OS_MANUAL "
+                . " WHERE "
+                    . " NRO_OS = " . $os;
         
         $this->Conn = parent::getConn();
         $this->Read = $this->Conn->prepare($select);

@@ -39,4 +39,25 @@ class ROSAtivDAO extends Conn {
         
     }
     
+    public function verif($os) {
+
+        $select = " SELECT "
+                    . " ROWNUM AS \"idROSAtiv\" "
+                    . " , NRO_OS AS \"nroOS\" "
+                    . " , ATIVAGR_CD AS \"codAtiv\" "
+                . " FROM "
+                    . " USINAS.V_SIMOVA_OS_MANUAL "
+                . " WHERE "
+                    . " NRO_OS = " . $os;
+        
+        $this->Conn = parent::getConn();
+        $this->Read = $this->Conn->prepare($select);
+        $this->Read->setFetchMode(PDO::FETCH_ASSOC);
+        $this->Read->execute();
+        $result = $this->Read->fetchAll();
+
+        return $result;
+        
+    }
+    
 }

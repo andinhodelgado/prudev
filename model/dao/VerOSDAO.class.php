@@ -47,8 +47,7 @@ class VerOSDAO extends Conn {
                 . " FROM "
                     . " USINAS.V_SIMOVA_OS_MANUAL "
                 . " WHERE "
-                    . " NRO_OS = " . $valor
-                ;
+                    . " NRO_OS = " . $valor;
         
         $this->Conn = parent::getConn();
         $this->Read = $this->Conn->prepare($select);

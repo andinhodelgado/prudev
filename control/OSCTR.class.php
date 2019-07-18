@@ -6,6 +6,7 @@
  * and open the template in the editor.
  */
 require_once('./model/dao/OSDAO.class.php');
+require_once('./model/dao/ROSAtivDAO.class.php');
 /**
  * Description of OSCTR
  *
@@ -27,17 +28,17 @@ class OSCTR {
     public function verif($info) {
 
         $osDAO = new OSDAO();
-        $itemOSDAO = new ItemOSDAO();
+        $rOSAtivDAO = new ROSAtivDAO();
 
         $dado = $info['dado'];
 
-        $dadosOS = array("dados" => $osDAO->dados($dado));
+        $dadosOS = array("dados" => $osDAO->verif($dado));
         $resOS = json_encode($dadosOS);
 
-        $dadosItemOS = array("dados" => $itemOSDAO->dados($dado));
-        $resItemOS = json_encode($dadosItemOS);
+        $dadosROSAtivDAO = array("dados" => $rOSAtivDAO->verif($dado));
+        $resROSAtivDAO = json_encode($dadosROSAtivDAO);
         
-        return $resOS . "_" . $resItemOS;
+        return $resOS . "_" . $resROSAtivDAO;
                 
     }
     

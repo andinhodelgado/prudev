@@ -20,6 +20,7 @@ if (isset($info)):
     $jsonObjBoletim = json_decode($c);
     $jsonObjAponta = json_decode($a);
     $jsonObjAlocaFunc = json_decode($af);
+    
     $dadosBoletim = $jsonObjBoletim->boletim;
     $dadosAponta = $jsonObjAponta->aponta;
     $dadosAlocaFunc = $jsonObjAlocaFunc->alocafunc;
