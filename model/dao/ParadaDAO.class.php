@@ -5,7 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-require_once ('./dbutil/Conn.class.php');
+require_once ('../dbutil/Conn.class.php');
 /**
  * Description of ParadaDAO
  *
@@ -23,14 +23,13 @@ class ParadaDAO extends Conn {
     public function dados() {
 
         $select = " SELECT "
-                    . " MOTPARADA_CD AS \"codParada\" "
-                    . " , CARACTER(MOTPARADA_DESCR) AS \"descrParada\" "
+                    . " MOTPARADMO_ID AS \"idParada\" "
+                    . " , CD AS \"codParada\" "
+                    . " , CARACTER(DESCR) AS \"descrParada\" "
                 . " FROM "
-                    . " USINAS.V_SIMOVA_PARADA "
-                . " WHERE "
-                    . " MOTPARADA_TIPO = 2 "
+                    . " USINAS.MOTIV_PARAD_MO "
                 . " ORDER BY "
-                    . " MOTPARADA_CD "
+                    . " CD "
                 . " ASC ";
 
         $this->Conn = parent::getConn();

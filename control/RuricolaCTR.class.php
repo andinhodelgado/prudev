@@ -5,20 +5,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-require_once('./model/dao/LogDAO.class.php');
-require_once('./model/dao/BoletimDAO.class.php');
-require_once('./model/dao/ApontDAO.class.php');
-require_once('./model/dao/AlocaFuncDAO.class.php');
-
+require_once('../model/dao/LogDAO.class.php');
+require_once('../model/dao/BoletimDAO.class.php');
+require_once('../model/dao/ApontDAO.class.php');
+require_once('../model/dao/AlocaFuncDAO.class.php');
 /**
- * Description of BoletimCTR
+ * Description of RuricolaCTR
  *
  * @author anderson
  */
-class InserirDadosCTR {
+class RuricolaCTR {
+    //put your code here
+    
 
     //put your code here
-
     public function salvarDadosBolAberto($info, $pagina) {
 
         $dados = $info['dado'];
@@ -63,7 +63,7 @@ class InserirDadosCTR {
         return 'GRAVOU-APONTAMM';
     }
 
-    public function salvarDadosBolFechadoMM($info, $pagina) {
+    public function salvarDadosBolFechado($info, $pagina) {
 
         $dados = $info['dado'];
         $this->salvarLog($dados, $pagina);
@@ -165,5 +165,5 @@ class InserirDadosCTR {
             }
         }
     }
-
+    
 }

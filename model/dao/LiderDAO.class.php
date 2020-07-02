@@ -5,7 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-require_once ('./dbutil/Conn.class.php');
+require_once ('../dbutil/Conn.class.php');
 /**
  * Description of LiderDAO
  *
@@ -24,7 +24,7 @@ class LiderDAO extends Conn {
 
         $select = " SELECT "
                     . " LIDER_ID AS \"idLider\" "
-                    . " , LIDER_MATRIC AS \"codLider\" "
+                    . " , LIDER_MATRIC AS \"matricLider\" "
                     . " , LIDER_NOME AS \"nomeLider\" "
                 . " FROM "
                     . " USINAS.V_SIMOVA_LIDER_MOBRA "

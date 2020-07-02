@@ -5,7 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-require_once ('./dbutil/Conn.class.php');
+require_once ('../dbutil/Conn.class.php');
 /**
  * Description of FuncionarioDAO
  *
@@ -25,8 +25,9 @@ class FuncDAO extends Conn {
         $select = " SELECT "
                         . " TF.FUNC_ID AS \"idFunc\" "
                         . " , TF.TURMA_ID AS \"idTurma\" "
-                        . " , FM.FUNC_CD AS \"codFunc\" "
+                        . " , FM.FUNC_CD AS \"matricFunc\" "
                         . " , FM.FUNC_NOME AS \"nomeFunc\" "
+                        . " , 2 AS \"tipoAlocaFunc\" "
                     . " FROM " 
                         . " V_SIMOVA_TURMA_FUNC TF "
                         . " , V_SIMOVA_FUNC_MOBRA FM "
