@@ -26,6 +26,8 @@ class OSDAO extends Conn {
                 . " NRO_OS AS \"nroOS\" "
                 . " , PROPRAGR_CD AS \"codSecao\" "
                 . " , PROPRAGR_DESCR AS \"descrSecao\" "
+                . " , FRENTE_ID AS \"idFrente\" "
+                . " , FRENTE_DESCR AS \"descrFrente\" "
                 . " FROM "
                 . " USINAS.V_SIMOVA_OS_MANUAL ";
         

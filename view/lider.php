@@ -2,8 +2,8 @@
 
 $versao = filter_input(INPUT_GET, 'versao', FILTER_DEFAULT);
 
-require_once('../control/LiderCTR.class.php');
+require_once('../control/BaseDadosCTR.class.php');
 
-$liderCTR = new LiderCTR();
+$baseDadosCTR = new BaseDadosCTR();
 
-echo $liderCTR->dados($versao);
+echo $baseDadosCTR->dadosLider($versao);

@@ -5,13 +5,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-require_once ('../dbutil/Conn.class.php');
+require_once 'Conn.class.php';
 /**
- * Description of LiderDAO
+ * Description of ROrganismoCaracDAO
  *
  * @author anderson
  */
-class TipoApontaDAO extends Conn {
+class ROrganCaracAmosFitoDAO extends Conn {
     //put your code here
     
     /** @var PDOStatement */
@@ -23,13 +23,12 @@ class TipoApontaDAO extends Conn {
     public function dados() {
 
         $select = " SELECT "
-                    . " ID AS \"idTipo\" "
-                    . " , DESCR_TIPO AS \"descrTipo\" "
+                    . " ORGDANAMOS_ID AS \"idROrganCarac\" "
+                    . " , ORGDANINHO_ID AS \"idOrgan\" "
+                    . " , GRCARACORG_ID AS \"idCaracOrgan\" "
+                    . " , AMOSORGAN_ID AS \"idAmostraOrgan\" "
                 . " FROM "
-                    . " PRU_TIPO_APONTAMENTO "
-                . " ORDER BY "
-                    . " ID "
-                . " ASC ";
+                    . " USINAS.V_INFEST_CARAC ";
         
         $this->Conn = parent::getConn();
         $this->Read = $this->Conn->prepare($select);
@@ -38,6 +37,7 @@ class TipoApontaDAO extends Conn {
         $result = $this->Read->fetchAll();
 
         return $result;
+        
     }
     
 }

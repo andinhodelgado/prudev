@@ -5,14 +5,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-require_once 'Conn.class.php';
+require_once('../dbutil/Conn.class.php');
 /**
- * Description of AmostraOrganismoDAO
+ * Description of EquipDAO
  *
  * @author anderson
  */
-class OrganDAO extends Conn {
-    //put your code here
+class EquipDAO extends Conn {
     
     /** @var PDOStatement */
     private $Read;
@@ -20,15 +19,18 @@ class OrganDAO extends Conn {
     /** @var PDO */
     private $Conn;
 
-    public function dados() {
+    public function dados($equip) {
 
         $select = " SELECT "
-                    . " ORGDANINHO_ID AS \"idOrgan\" "
-                    . " , CD AS \"codOrgan\" "
-                    . " , CARACTER(DESCR) AS \"descrOrgan\" "
+                . " E.EQUIP_ID AS \"idEquip\" "
+                . " , E.NRO_EQUIP AS \"nroEquip\" "
+                . " , E.CLASSOPER_CD AS \"codClasseEquip\" "
+                . " , CARACTER(E.CLASSOPER_DESCR) AS \"descrClasseEquip\" "
                 . " FROM "
-                    . " USINAS.V_INFEST_ORGAN ";
-        
+                . " V_EQUIP E "
+                . " WHERE  "
+                . " E.CLASSOPER_CD = 2 ";
+
         $this->Conn = parent::getConn();
         $this->Read = $this->Conn->prepare($select);
         $this->Read->setFetchMode(PDO::FETCH_ASSOC);
@@ -36,7 +38,6 @@ class OrganDAO extends Conn {
         $result = $this->Read->fetchAll();
 
         return $result;
-        
     }
     
 }
