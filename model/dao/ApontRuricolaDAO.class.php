@@ -6,13 +6,12 @@
  * and open the template in the editor.
  */
 require_once ('../dbutil/Conn.class.php');
-
 /**
  * Description of ApontDAO
  *
  * @author anderson
  */
-class ApontDAO extends Conn {
+class ApontRuricolaDAO extends Conn {
 
     //put your code here
 

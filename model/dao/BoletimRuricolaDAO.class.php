@@ -11,7 +11,7 @@ require_once ('../dbutil/Conn.class.php');
  *
  * @author anderson
  */
-class BoletimDAO extends Conn {
+class BoletimRuricolaDAO extends Conn {
 
     //put your code here
 
@@ -63,35 +63,7 @@ class BoletimDAO extends Conn {
         return $id;
     }
 
-    public function insBoletimAberto($bol) {
-
-        $sql = "INSERT INTO PRU_BOLETIM ("
-                . " LIDER_MATRIC "
-                . " , TURMA_ID "
-                . " , OS_NRO "
-                . " , ATIVAGR_PRINC_ID "
-                . " , DTHR_INICIAL "
-                . " , DTHR_TRANS_INICIAL "
-                . " , STATUS "
-                . " , SIT "
-                . " ) "
-                . " VALUES ("
-                . " " . $bol->idLiderBoletim
-                . " , " . $bol->idTurmaBoletim
-                . " , " . $bol->osBoletim
-                . " , " . $bol->ativPrincBoletim
-                . " , TO_DATE('" . $bol->dthrInicioBoletim . "','DD/MM/YYYY HH24:MI') "
-                . " , SYSDATE "
-                . " , 1 "
-                . " , 0 "
-                . " )";
-
-        $this->Conn = parent::getConn();
-        $this->Create = $this->Conn->prepare($sql);
-        $this->Create->execute();
-    }
-
-    public function insBoletimFechado($bol) {
+    public function insBoletim($bol) {
 
         $sql = "INSERT INTO PRU_BOLETIM ("
                 . " LIDER_MATRIC "
@@ -117,21 +89,6 @@ class BoletimDAO extends Conn {
                 . " , 2 "
                 . " , 0 "
                 . " )";
-
-        $this->Conn = parent::getConn();
-        $this->Create = $this->Conn->prepare($sql);
-        $this->Create->execute();
-    }
-
-    public function altBoletimFechado($idBol, $bol) {
-
-        $sql = "UPDATE PRU_BOLETIM "
-                . " SET "
-                . " STATUS = " . $bol->statusBoletim
-                . " , DTHR_FINAL = TO_DATE('" . $bol->dthrFimBoletim . "','DD/MM/YYYY HH24:MI') "
-                . " , DTHR_TRANS_FINAL = SYSDATE "
-                . " WHERE "
-                . " ID = " . $idBol;
 
         $this->Conn = parent::getConn();
         $this->Create = $this->Conn->prepare($sql);
